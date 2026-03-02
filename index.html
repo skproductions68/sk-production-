@@ -3,267 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Productions - Showroom Retainer Packages</title>
+    <title>Invoice Summary - SK Productions</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --color-black-bg: #050505;
-            --color-dark-card: #121212;
-            --color-gold: #D4AF37; /* Metallic Gold */
-            --color-gold-hover: #F1C40F;
-            --color-text-white: #FFFFFF;
-            --color-text-gray: #A1A1AA;
-        }
-        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--color-black-bg);
-            color: var(--color-text-white);
-            background-image: radial-gradient(circle at top center, #1a1a1a 0%, #050505 60%);
+            background-color: #000000; /* Pure Black background */
+            color: #f5f5f5; /* Light text for contrast */
         }
-        .package-card {
-            background-color: var(--color-dark-card);
-            border: 1px solid #27272a;
-            transition: all 0.3s ease;
+        .tab-active {
+            border-color: #D4AF37; /* Golden */
+            color: #D4AF37;
+            font-weight: 600;
         }
-        .package-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--color-gold);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+        .tab-inactive {
+            border-color: transparent;
+            color: #888888; /* Lighter gray for inactive */
         }
-        .btn-gold {
-            background: transparent;
-            color: var(--color-gold);
-            border: 1px solid var(--color-gold);
-            transition: all 0.3s ease;
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
         }
-        .btn-gold:hover {
-            background: var(--color-gold);
-            color: black;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
         }
-        .highlight-pill {
-            background: linear-gradient(90deg, #D4AF37, #F1C40F);
-            color: black;
-            font-weight: 800;
+        .serif-font {
+            font-family: 'Playfair Display', serif;
         }
-        
-        /* Modal Styling */
-        .modal-backdrop {
-            background-color: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(5px);
+        /* Custom scrollbar for tables if needed */
+        ::-webkit-scrollbar {
+            height: 6px;
         }
-        .check-icon { color: var(--color-gold); margin-right: 0.5rem; }
-        .x-icon { color: #ef4444; margin-right: 0.5rem; }
+        ::-webkit-scrollbar-track {
+            background: #111; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37; 
+        }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
-
-    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-12 w-full flex-grow">
+<body class="antialiased">
+    <div class="max-w-6xl mx-auto p-4 md:p-8">
         
-        <header class="text-center mb-14">
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-2">
-                SK <span class="text-[#D4AF37]">PRODUCTIONS</span>
-            </h1>
-            <p class="text-xl text-gray-400">Automotive Media & Digital Automation</p>
-            <div class="w-24 h-1 bg-[#D4AF37] mx-auto mt-6 rounded-full"></div>
+        <!-- Header -->
+        <header class="text-center mb-8 md:mb-12">
+            <p class="text-4xl font-bold text-white serif-font mb-4 tracking-wide">
+                <i class="text-[#D4AF37] pr-1">SK</i><span class="uppercase tracking-widest text-2xl ml-1">Productions</span>
+            </p>
+            <h1 class="text-3xl md:text-4xl font-bold text-white">Invoice Summary</h1>
+            <p class="text-lg text-gray-400 mt-2">Shoot Date: February 16</p>
         </header>
 
-        <main>
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                <div class="package-card p-8 rounded-xl flex flex-col relative group">
-                    <h3 class="text-2xl font-bold text-white">Inventory Tier</h3>
-                    <p class="text-gray-400 text-sm mt-2 mb-6 h-10">Consistent content flow for stock updates. Ideal for self-managed pages.</p>
-                    
-                    <div class="mb-6">
-                        <span class="text-4xl font-extrabold">PKR 25,000</span>
-                        <span class="text-gray-500 text-sm">/month</span>
+        <!-- Key Figures -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 md:mb-12">
+            <div class="bg-[#111111] p-6 rounded-2xl shadow-lg border border-gray-800 flex flex-col justify-center items-center text-center">
+                <h2 class="text-sm font-medium text-gray-400 tracking-wider uppercase">Total Project Cost</h2>
+                <p class="text-3xl font-bold text-white mt-2">PKR 20,000</p>
+            </div>
+            <div class="bg-[#111111] p-6 rounded-2xl shadow-lg border border-gray-800 flex flex-col justify-center items-center text-center">
+                <h2 class="text-sm font-medium text-gray-400 tracking-wider uppercase">Advance Paid</h2>
+                <p class="text-3xl font-bold text-green-500 mt-2">- PKR 10,000</p>
+            </div>
+            <div class="bg-[#111111] p-6 rounded-2xl shadow-lg border border-[#D4AF37] flex flex-col justify-center items-center text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-[#D4AF37] text-black text-[10px] font-bold px-2 py-1 uppercase tracking-widest rounded-bl-lg animate-pulse">ASAP</div>
+                <h2 class="text-sm font-medium text-gray-400 tracking-wider uppercase">Remaining Balance</h2>
+                <p class="text-4xl font-bold text-[#D4AF37] mt-2">PKR 10,000</p>
+            </div>
+        </div>
+        
+        <!-- Chart Section -->
+        <div class="bg-[#111111] p-6 md:p-8 rounded-2xl shadow-lg border border-gray-800 mb-8 md:mb-12">
+            <h2 class="text-2xl font-bold text-white text-center mb-2">Cost Breakdown</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-8">This interactive summary provides a clear breakdown of the total project costs (PKR 20,000). The chart visualizes the contribution of each service category. Use the tabs below to explore the exact charges.</p>
+            <div class="chart-container">
+                <canvas id="invoiceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Detailed Tabs Section -->
+        <div class="bg-[#111111] p-6 md:p-8 rounded-2xl shadow-lg border border-gray-800">
+             <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-white">Detailed Services</h2>
+                 <p class="text-gray-400 max-w-2xl mx-auto mt-2">Select a category below to view the specific services and equipment included in this invoice.</p>
+            </div>
+
+            <div class="mb-6 border-b border-gray-800">
+                <nav class="flex justify-center -mb-px space-x-4 sm:space-x-8" aria-label="Tabs">
+                    <button class="tab-button tab-active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors" data-tab="shoot">Production</button>
+                    <button class="tab-button tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors" data-tab="edit">Post-Production</button>
+                    <button class="tab-button tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors" data-tab="equipment">Equipment</button>
+                </nav>
+            </div>
+
+            <div id="tab-content">
+                <!-- Production Tab -->
+                <div id="shoot" class="tab-pane">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-800">
+                            <thead class="bg-[#0a0a0a]">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tl-lg">Description</th>
+                                    <th scope="col" class="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tr-lg">Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-[#111111] divide-y divide-gray-800">
+                                <tr>
+                                    <td class="px-6 py-5 whitespace-nowrap text-base font-medium text-white">4 hr shoot</td>
+                                    <td class="px-6 py-5 whitespace-nowrap text-base text-gray-300 text-right">PKR 10,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-
-                    <ul class="space-y-3 mb-8 text-sm flex-grow">
-                        <li class="flex items-start"><span class="check-icon">✔</span><div><strong>6 Car Reviews/Reels</strong><br><span class="text-xs text-gray-500">Full standard edits</span></div></li>
-                        <li class="flex items-start"><span class="check-icon">✔</span><div><strong>6 Photo Sets</strong><br><span class="text-xs text-gray-500">10 images per car</span></div></li>
-                        <li class="flex items-center text-gray-500"><span class="x-icon">✖</span>No Social Scheduling</li>
-                        <li class="flex items-center text-gray-500"><span class="x-icon">✖</span>No Ad Management</li>
-                    </ul>
-
-                    <button class="visualize-btn btn-gold w-full py-3 rounded-lg font-bold uppercase tracking-wider text-sm" data-package="inventory">View Cost Breakdown</button>
                 </div>
 
-                <div class="package-card p-8 rounded-xl flex flex-col relative transform md:-translate-y-4 border-[#D4AF37] border-opacity-30">
-                    <div class="absolute top-0 center left-1/2 transform -translate-x-1/2 -translate-y-1/2 highlight-pill px-4 py-1 rounded-full text-xs shadow-lg shadow-gold/20">MOST POPULAR</div>
-                    
-                    <h3 class="text-2xl font-bold text-white">Traction Tier</h3>
-                    <p class="text-gray-400 text-sm mt-2 mb-6 h-10">Increased volume plus scheduled posting to keep your feed active.</p>
-                    
-                    <div class="mb-6">
-                        <span class="text-4xl font-extrabold text-[#D4AF37]">PKR 55,000</span>
-                        <span class="text-gray-500 text-sm">/month</span>
+                <!-- Post-Production Tab -->
+                <div id="edit" class="tab-pane hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-800">
+                            <thead class="bg-[#0a0a0a]">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tl-lg">Description</th>
+                                    <th scope="col" class="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tr-lg">Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-[#111111] divide-y divide-gray-800">
+                                <tr>
+                                    <td class="px-6 py-5 whitespace-nowrap text-base font-medium text-white">1 motion graphics edit</td>
+                                    <td class="px-6 py-5 whitespace-nowrap text-base text-gray-300 text-right">PKR 2,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-
-                    <ul class="space-y-3 mb-8 text-sm flex-grow">
-                        <li class="flex items-start"><span class="check-icon">✔</span><div><strong>10 Car Reviews/Reels</strong><br><span class="text-xs text-gray-500">High retention edits</span></div></li>
-                        <li class="flex items-start"><span class="check-icon">✔</span><div><strong>10 Photo Sets</strong><br><span class="text-xs text-gray-500">Interior & Exterior details</span></div></li>
-                        <li class="flex items-start"><span class="check-icon">✔</span><div><strong>Social Scheduling</strong><br><span class="text-xs text-gray-500">We manage the posting calendar</span></div></li>
-                        <li class="flex items-center text-gray-500"><span class="x-icon">✖</span>Self-Managed Ads</li>
-                    </ul>
-
-                    <button class="visualize-btn btn-gold w-full py-3 rounded-lg font-bold uppercase tracking-wider text-sm" style="background-color: var(--color-gold); color: black;" data-package="traction">View Cost Breakdown</button>
                 </div>
 
-                <div class="package-card p-8 rounded-xl flex flex-col relative">
-                    <h3 class="text-2xl font-bold text-white">Autopilot Tier</h3>
-                    <p class="text-gray-400 text-sm mt-2 mb-6 h-10">Complete automation. Visual hooks for ads and full funnel management.</p>
-                    
-                    <div class="mb-6">
-                        <span class="text-4xl font-extrabold">PKR 75,000</span>
-                        <span class="text-gray-500 text-sm">/month</span>
+                <!-- Equipment Tab -->
+                <div id="equipment" class="tab-pane hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-800">
+                            <thead class="bg-[#0a0a0a]">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tl-lg">Description</th>
+                                    <th scope="col" class="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tr-lg">Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-[#111111] divide-y divide-gray-800">
+                                <tr>
+                                    <td class="px-6 py-5 whitespace-nowrap text-base font-medium text-white">Equipments</td>
+                                    <td class="px-6 py-5 whitespace-nowrap text-base text-gray-300 text-right">PKR 8,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-
-                    <ul class="space-y-3 mb-8 text-sm flex-grow">
-                        <li class="flex items-start"><span class="check-icon">✔</span><div><strong>12 Premium Reels</strong><br><span class="text-xs text-[#D4AF37]">Includes "Visual Hook" variations</span></div></li>
-                        <li class="flex items-start"><span class="check-icon">✔</span><div><strong>Unlimited Photography</strong><br><span class="text-xs text-gray-500">Covering all new stock</span></div></li>
-                        <li class="flex items-start"><span class="check-icon">✔</span><div><strong>Full Ad Automation</strong><br><span class="text-xs text-gray-500">Targeted Meta Ads Manager setup</span></div></li>
-                        <li class="flex items-start"><span class="check-icon">✔</span><div><strong>Community Mgmt</strong><br><span class="text-xs text-gray-500">Reply to comments & inquiries</span></div></li>
-                    </ul>
-
-                    <button class="visualize-btn btn-gold w-full py-3 rounded-lg font-bold uppercase tracking-wider text-sm" data-package="autopilot">View Cost Breakdown</button>
                 </div>
+            </div>
+        </div>
 
-            </section>
-        </main>
-
-        <footer class="mt-16 text-center text-gray-600 text-sm">
-            <p>&copy; 2025 SK Productions. Custom solutions for Automotive Dealerships.</p>
+        <!-- Payment Footer -->
+        <footer class="mt-8 md:mt-12 bg-[#111111] p-6 md:p-8 rounded-2xl shadow-lg border border-gray-800">
+            <h3 class="text-xl font-bold text-center text-white mb-6 uppercase tracking-widest text-[#D4AF37]">Payment Instructions</h3>
+            <div class="max-w-md mx-auto bg-[#0a0a0a] p-6 rounded-lg border border-gray-800">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                        <span class="text-sm text-gray-400">Bank:</span>
+                        <span class="text-sm font-semibold text-white">Bank AL Habib</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                        <span class="text-sm text-gray-400">Account Title:</span>
+                        <span class="text-sm font-semibold text-white tracking-wide">MANSOOR ANWAR KHAN</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="text-sm text-gray-400">Account No:</span>
+                        <span id="account-number" class="text-lg font-mono font-bold text-[#D4AF37]">10170981028974018</span>
+                    </div>
+                </div>
+                <button id="copy-button" class="mt-8 w-full bg-[#D4AF37] text-black py-3 px-4 rounded-lg text-sm font-bold uppercase tracking-wider hover:bg-[#b5952f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#111] focus:ring-[#D4AF37] transition-all flex justify-center items-center gap-2">
+                    <svg xmlns="http://www.3w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    Copy Account Number
+                </button>
+                <p id="copy-feedback" class="text-center text-green-400 text-sm mt-3 h-5 font-medium transition-opacity duration-300 opacity-0"></p>
+            </div>
         </footer>
 
     </div>
 
-    <div id="modal" class="modal-backdrop fixed inset-0 hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#121212] border border-gray-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden relative transform transition-all scale-95" id="modal-content">
-            
-            <div class="bg-[#1a1a1a] p-6 border-b border-gray-800 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-white" id="modal-title">Tier Analysis</h2>
-                <button id="close-btn" class="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
-            </div>
-
-            <div class="p-6 space-y-5">
-                
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="text-gray-400 text-sm">Video Production</p>
-                        <p class="text-xs text-[#D4AF37]" id="video-detail">6 units @ Rate</p>
-                    </div>
-                    <span class="font-mono text-lg" id="video-cost">0</span>
-                </div>
-
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="text-gray-400 text-sm">Photography</p>
-                        <p class="text-xs text-gray-600" id="photo-detail">Included</p>
-                    </div>
-                    <span class="font-mono text-lg" id="photo-cost">0</span>
-                </div>
-
-                <div class="flex justify-between items-center pt-4 border-t border-gray-800 border-dashed">
-                    <div>
-                        <p class="text-gray-400 text-sm">Digital Management</p>
-                        <p class="text-xs text-gray-600" id="mgmt-detail">Posting, Ads, Strategy</p>
-                    </div>
-                    <span class="font-mono text-lg text-[#D4AF37]" id="mgmt-cost">0</span>
-                </div>
-
-                <div class="bg-[#D4AF37] text-black p-4 rounded-lg mt-4 flex justify-between items-center shadow-lg shadow-gold/10">
-                    <span class="font-bold uppercase text-sm tracking-wider">Total Package</span>
-                    <span class="font-extrabold text-2xl" id="total-cost">0</span>
-                </div>
-                
-                <p class="text-center text-xs text-gray-500 mt-2" id="savings-text"></p>
-
-            </div>
-        </div>
-    </div>
-
     <script>
-        const data = {
-            inventory: {
-                title: "Inventory Tier",
-                videos: 6,
-                unitRate: 3500, // Reduced rate to make math hit 25k
-                photoVal: 4000,
-                mgmtVal: 0,
-                mgmtDesc: "Not Included",
-                savings: "You save on per-unit media costs"
-            },
-            traction: {
-                title: "Traction Tier",
-                videos: 10,
-                unitRate: 4000,
-                photoVal: 8000, 
-                mgmtVal: 7000, // Value of Scheduling Only
-                mgmtDesc: "Scheduling & Calendar Mgmt",
-                savings: "Includes hands-free posting"
-            },
-            autopilot: {
-                title: "Autopilot Tier",
-                videos: 12,
-                unitRate: 3500, 
-                photoVal: 8000, 
-                mgmtVal: 25000,
-                mgmtDesc: "Full Ads, Hooks & Community",
-                savings: "Includes Visual Hooks & High-End Edits"
-            }
-        };
+        document.addEventListener('DOMContentLoaded', function () {
+            // Updated Data based on prompt
+            const invoiceData = {
+                shoot: { total: 10000, label: '4 hr shoot' },
+                equipment: { total: 8000, label: 'Equipments' },
+                edit: { total: 2000, label: 'Motion Graphics Edit' }
+            };
 
-        const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modal-content');
-        const btns = document.querySelectorAll('.visualize-btn');
-        const closeBtn = document.getElementById('close-btn');
-        
-        const formatMoney = (amount) => 'PKR ' + amount.toLocaleString();
+            // Initialize Chart.js Doughnut Chart
+            const ctx = document.getElementById('invoiceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Production (Shoot)', 'Equipment', 'Post-Production (Edit)'],
+                    datasets: [{
+                        data: [
+                            invoiceData.shoot.total,
+                            invoiceData.equipment.total,
+                            invoiceData.edit.total
+                        ],
+                        // Black, White, Golden color palette
+                        backgroundColor: ['#D4AF37', '#ffffff', '#555555'],
+                        borderColor: '#111111', 
+                        borderWidth: 4,
+                        hoverOffset: 10,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 13,
+                                    family: "'Inter', sans-serif"
+                                },
+                                color: '#e5e5e5' 
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleColor: '#D4AF37',
+                            bodyColor: '#ffffff',
+                            borderColor: '#333333',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'PKR' }).format(context.parsed);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
 
-        btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const pkg = data[btn.dataset.package];
-                
-                // Populate Data
-                document.getElementById('modal-title').innerText = pkg.title;
-                document.getElementById('video-detail').innerText = `${pkg.videos} Videos (Discounted)`;
-                document.getElementById('video-cost').innerText = formatMoney(pkg.videos * pkg.unitRate);
-                
-                document.getElementById('photo-cost').innerText = formatMoney(pkg.photoVal);
-                
-                document.getElementById('mgmt-detail').innerText = pkg.mgmtDesc;
-                document.getElementById('mgmt-cost').innerText = formatMoney(pkg.mgmtVal);
-                
-                const total = (pkg.videos * pkg.unitRate) + pkg.photoVal + pkg.mgmtVal;
-                document.getElementById('total-cost').innerText = formatMoney(total);
-                document.getElementById('savings-text').innerText = pkg.savings;
+            // Tabs Logic
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('tab-active');
+                        btn.classList.add('tab-inactive');
+                    });
+                    button.classList.add('tab-active');
+                    button.classList.remove('tab-inactive');
 
-                // Open
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modalContent.classList.remove('scale-95');
-                    modalContent.classList.add('scale-100');
-                }, 10);
+                    tabPanes.forEach(pane => {
+                        if (pane.id === button.dataset.tab) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            // Copy to Clipboard Logic
+            const copyButton = document.getElementById('copy-button');
+            const accountNumber = document.getElementById('account-number').innerText;
+            const copyFeedback = document.getElementById('copy-feedback');
+            
+            copyButton.addEventListener('click', () => {
+                // Using modern clipboard API with fallback
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(accountNumber).then(showFeedback);
+                } else {
+                    const tempInput = document.createElement('input');
+                    document.body.appendChild(tempInput);
+                    tempInput.value = accountNumber;
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                    showFeedback();
+                }
+                
+                function showFeedback() {
+                    copyFeedback.textContent = 'Account Number Copied!';
+                    copyFeedback.style.opacity = '1';
+                    setTimeout(() => {
+                        copyFeedback.style.opacity = '0';
+                    }, 2500);
+                }
             });
         });
-
-        const closeModal = () => {
-            modalContent.classList.remove('scale-100');
-            modalContent.classList.add('scale-95');
-            setTimeout(() => modal.classList.add('hidden'), 200);
-        };
-
-        closeBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if(e.target === modal) closeModal();
-        });
-
     </script>
 </body>
 </html>
+
+
