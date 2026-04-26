@@ -3,326 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Summary - SK Productions</title>
+    <title>SK Productions - Project Completion & Payment</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --color-black-bg: #050505;
+            --color-dark-card: #121212;
+            --color-gold: #D4AF37; 
+            --color-text-white: #FFFFFF;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000000; /* Pure Black background */
-            color: #f5f5f5; /* Light text for contrast */
+            background-color: var(--color-black-bg);
+            color: var(--color-text-white);
+            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #050505 70%);
+            background-attachment: fixed;
         }
-        .tab-active {
-            border-color: #D4AF37; /* Golden */
-            color: #D4AF37;
-            font-weight: 600;
+
+        .proposal-card {
+            background-color: var(--color-dark-card);
+            border: 1px solid #27272a;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
         }
-        .tab-inactive {
-            border-color: transparent;
-            color: #888888; /* Lighter gray for inactive */
+
+        .gold-gradient-text {
+            background: linear-gradient(to bottom right, #D4AF37, #F1C40F, #B8860B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 320px;
-            max-height: 400px;
+
+        .btn-gold {
+            background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+            color: black;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            filter: brightness(1.1);
         }
-        .serif-font {
-            font-family: 'Playfair Display', serif;
+
+        .btn-copy {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--color-gold);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.2s ease;
         }
-        /* Custom scrollbar for tables if needed */
-        ::-webkit-scrollbar {
-            height: 6px;
+
+        .btn-copy:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--color-gold);
         }
-        ::-webkit-scrollbar-track {
-            background: #111; 
+
+        .check-icon { color: var(--color-gold); }
+
+        .timeline-line {
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #15803d; /* Green for completed path */
         }
-        ::-webkit-scrollbar-thumb {
-            background: #333; 
-            border-radius: 4px;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #D4AF37; 
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .copy-notification {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-gold);
+            color: black;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 0.875rem;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
     </style>
 </head>
-<body class="antialiased">
-    <div class="max-w-6xl mx-auto p-4 md:p-8">
+<body class="antialiased min-h-screen pb-20">
+
+    <div id="copy-toast" class="copy-notification">Account Number Copied!</div>
+
+    <!-- Header Section -->
+    <header class="pt-16 pb-12 px-6 text-center animate-fade-in">
+        <div class="inline-block mb-4">
+            <svg class="w-12 h-12 text-[#D4AF37] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tighter mb-4">
+            SK <span class="gold-gradient-text">PRODUCTIONS</span>
+        </h1>
+        <div class="h-1 w-20 bg-[#D4AF37] mx-auto rounded-full mb-4"></div>
+        <div class="flex flex-col items-center justify-center gap-2 mb-4">
+            <span class="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
+                Project Status: Fully Completed
+            </span>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 md:px-6 space-y-12">
         
-        <!-- Header -->
-        <header class="text-center mb-8 md:mb-12">
-            <p class="text-4xl font-bold text-white serif-font mb-4 tracking-wide">
-                <i class="text-[#D4AF37] pr-1">SK</i><span class="uppercase tracking-widest text-2xl ml-1">Productions</span>
-            </p>
-            <h1 class="text-3xl md:text-4xl font-bold text-white">Invoice Summary</h1>
-            <p class="text-lg text-gray-400 mt-2">Shoot Date: February 16</p>
-        </header>
+        <!-- Main Proposal Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Details Column -->
+            <div class="lg:col-span-2 space-y-8">
+                <div class="proposal-card p-8 md:p-10 rounded-3xl animate-fade-in">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="text-xs font-bold uppercase tracking-widest text-gray-500">Proposal ID: #SK-2024-ATM</span>
+                    </div>
+                    
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Corporate Event Coverage</h2>
+                    
+                    <!-- Paid Status Summary -->
+                    <div class="bg-[#1a1a1a] border border-gray-800 rounded-2xl p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Advance Received</p>
+                            <p class="text-2xl font-bold text-white flex items-center gap-2">
+                                PKR 15,000 
+                                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            </p>
+                        </div>
+                        <div class="hidden md:block w-px h-10 bg-gray-800"></div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Final Balance Outstanding</p>
+                            <p class="text-2xl font-bold text-[#D4AF37]">PKR 10,000</p>
+                        </div>
+                    </div>
 
-        <!-- Key Figures -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 md:mb-12">
-            <div class="bg-[#111111] p-6 rounded-2xl shadow-lg border border-gray-800 flex flex-col justify-center items-center text-center">
-                <h2 class="text-sm font-medium text-gray-400 tracking-wider uppercase">Total Project Cost</h2>
-                <p class="text-3xl font-bold text-white mt-2">PKR 20,000</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                        <div class="p-5 bg-[#1a1a1a] rounded-2xl border border-gray-800">
+                            <h4 class="text-gray-500 text-xs font-bold uppercase mb-3 tracking-widest">Video Production</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> 4K Cinematic Highlight Reel</li>
+                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> Professional Color Grading</li>
+                            </ul>
+                        </div>
+                        <div class="p-5 bg-[#1a1a1a] rounded-2xl border border-gray-800">
+                            <h4 class="text-gray-500 text-xs font-bold uppercase mb-3 tracking-widest">Photography</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> Full Event Candid Coverage</li>
+                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> Stage & Keynote Moments</li>
+                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> High-Res Digital Delivery</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+                        Project History
+                    </h3>
+                    
+                    <div class="relative space-y-8 mb-4">
+                        <div class="timeline-line"></div>
+                        
+                        <!-- Step 1 -->
+                        <div class="relative flex items-start pl-10">
+                            <div class="absolute left-0 w-8 h-8 bg-green-500 border border-green-400 rounded-full flex items-center justify-center z-10">
+                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-white">Booking & Advance</h5>
+                                <p class="text-sm text-gray-500">PKR 15,000 received. Project initiated.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative flex items-start pl-10">
+                            <div class="absolute left-0 w-8 h-8 bg-green-500 border border-green-400 rounded-full flex items-center justify-center z-10">
+                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-white">Production Phase</h5>
+                                <p class="text-sm text-gray-500">Live event coverage and primary media capture completed.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative flex items-start pl-10">
+                            <div class="absolute left-0 w-8 h-8 bg-green-500 border border-green-400 rounded-full flex items-center justify-center z-10">
+                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-white">Final Post-Production</h5>
+                                <p class="text-sm text-gray-500">Editing, color grading, and exports ready for delivery.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="bg-[#111111] p-6 rounded-2xl shadow-lg border border-gray-800 flex flex-col justify-center items-center text-center">
-                <h2 class="text-sm font-medium text-gray-400 tracking-wider uppercase">Advance Paid</h2>
-                <p class="text-3xl font-bold text-green-500 mt-2">- PKR 10,000</p>
+
+            <!-- Account Details Column -->
+            <div class="space-y-6">
+                <div class="proposal-card p-8 rounded-3xl sticky top-8 animate-fade-in" style="animation-delay: 0.2s">
+                    <h3 class="text-xl font-bold mb-6 text-center">Payment Details</h3>
+                    
+                    <div class="space-y-6">
+                        <!-- Account Box -->
+                        <div class="p-5 bg-[#1a1a1a] rounded-2xl border border-gray-800 space-y-4">
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Account Title</p>
+                                <p class="text-white font-medium">MANSOOR ANWAR KHAN</p>
+                            </div>
+                            
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Bank Name</p>
+                                <p class="text-white font-medium">Bank Al Habib</p>
+                            </div>
+
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Account Number</p>
+                                <div class="flex items-center justify-between gap-2 mt-1">
+                                    <p id="acc-no" class="text-lg font-mono font-bold gold-gradient-text">10170981028974018</p>
+                                    <button onclick="copyToClipboard('10170981028974018')" class="btn-copy p-2 rounded-lg" title="Copy Account Number">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-green-500/5 border border-green-500/10 rounded-xl">
+                            <p class="text-[10px] text-green-500/80 uppercase tracking-widest font-bold mb-2">Final Settlement</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-400">Amount Due:</span>
+                                <span class="text-xl font-bold text-white">PKR 10,000</span>
+                            </div>
+                        </div>
+
+                        <button id="confirm-btn" class="btn-gold w-full py-4 rounded-xl font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2">
+                            Finalize Project
+                        </button>
+                    </div>
+
+                    <p class="mt-6 text-[10px] text-center text-gray-600 uppercase tracking-tighter">
+                        Assets will be shared immediately upon payment confirmation.
+                    </p>
+                </div>
             </div>
-            <div class="bg-[#111111] p-6 rounded-2xl shadow-lg border border-[#D4AF37] flex flex-col justify-center items-center text-center relative overflow-hidden">
-                <div class="absolute top-0 right-0 bg-[#D4AF37] text-black text-[10px] font-bold px-2 py-1 uppercase tracking-widest rounded-bl-lg animate-pulse">ASAP</div>
-                <h2 class="text-sm font-medium text-gray-400 tracking-wider uppercase">Remaining Balance</h2>
-                <p class="text-4xl font-bold text-[#D4AF37] mt-2">PKR 10,000</p>
-            </div>
+
         </div>
-        
-        <!-- Chart Section -->
-        <div class="bg-[#111111] p-6 md:p-8 rounded-2xl shadow-lg border border-gray-800 mb-8 md:mb-12">
-            <h2 class="text-2xl font-bold text-white text-center mb-2">Cost Breakdown</h2>
-            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-8">This interactive summary provides a clear breakdown of the total project costs (PKR 20,000). The chart visualizes the contribution of each service category. Use the tabs below to explore the exact charges.</p>
-            <div class="chart-container">
-                <canvas id="invoiceChart"></canvas>
-            </div>
-        </div>
 
-        <!-- Detailed Tabs Section -->
-        <div class="bg-[#111111] p-6 md:p-8 rounded-2xl shadow-lg border border-gray-800">
-             <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold text-white">Detailed Services</h2>
-                 <p class="text-gray-400 max-w-2xl mx-auto mt-2">Select a category below to view the specific services and equipment included in this invoice.</p>
-            </div>
+    </main>
 
-            <div class="mb-6 border-b border-gray-800">
-                <nav class="flex justify-center -mb-px space-x-4 sm:space-x-8" aria-label="Tabs">
-                    <button class="tab-button tab-active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors" data-tab="shoot">Production</button>
-                    <button class="tab-button tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors" data-tab="edit">Post-Production</button>
-                    <button class="tab-button tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm sm:text-base transition-colors" data-tab="equipment">Equipment</button>
-                </nav>
-            </div>
-
-            <div id="tab-content">
-                <!-- Production Tab -->
-                <div id="shoot" class="tab-pane">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-800">
-                            <thead class="bg-[#0a0a0a]">
-                                <tr>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tl-lg">Description</th>
-                                    <th scope="col" class="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tr-lg">Cost</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-[#111111] divide-y divide-gray-800">
-                                <tr>
-                                    <td class="px-6 py-5 whitespace-nowrap text-base font-medium text-white">4 hr shoot</td>
-                                    <td class="px-6 py-5 whitespace-nowrap text-base text-gray-300 text-right">PKR 10,000</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Post-Production Tab -->
-                <div id="edit" class="tab-pane hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-800">
-                            <thead class="bg-[#0a0a0a]">
-                                <tr>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tl-lg">Description</th>
-                                    <th scope="col" class="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tr-lg">Cost</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-[#111111] divide-y divide-gray-800">
-                                <tr>
-                                    <td class="px-6 py-5 whitespace-nowrap text-base font-medium text-white">1 motion graphics edit</td>
-                                    <td class="px-6 py-5 whitespace-nowrap text-base text-gray-300 text-right">PKR 2,000</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Equipment Tab -->
-                <div id="equipment" class="tab-pane hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-800">
-                            <thead class="bg-[#0a0a0a]">
-                                <tr>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tl-lg">Description</th>
-                                    <th scope="col" class="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tr-lg">Cost</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-[#111111] divide-y divide-gray-800">
-                                <tr>
-                                    <td class="px-6 py-5 whitespace-nowrap text-base font-medium text-white">Equipments</td>
-                                    <td class="px-6 py-5 whitespace-nowrap text-base text-gray-300 text-right">PKR 8,000</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Payment Footer -->
-        <footer class="mt-8 md:mt-12 bg-[#111111] p-6 md:p-8 rounded-2xl shadow-lg border border-gray-800">
-            <h3 class="text-xl font-bold text-center text-white mb-6 uppercase tracking-widest text-[#D4AF37]">Payment Instructions</h3>
-            <div class="max-w-md mx-auto bg-[#0a0a0a] p-6 rounded-lg border border-gray-800">
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                        <span class="text-sm text-gray-400">Bank:</span>
-                        <span class="text-sm font-semibold text-white">Bank AL Habib</span>
-                    </div>
-                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                        <span class="text-sm text-gray-400">Account Title:</span>
-                        <span class="text-sm font-semibold text-white tracking-wide">MANSOOR ANWAR KHAN</span>
-                    </div>
-                    <div class="flex justify-between items-center pt-1">
-                        <span class="text-sm text-gray-400">Account No:</span>
-                        <span id="account-number" class="text-lg font-mono font-bold text-[#D4AF37]">10170981028974018</span>
-                    </div>
-                </div>
-                <button id="copy-button" class="mt-8 w-full bg-[#D4AF37] text-black py-3 px-4 rounded-lg text-sm font-bold uppercase tracking-wider hover:bg-[#b5952f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#111] focus:ring-[#D4AF37] transition-all flex justify-center items-center gap-2">
-                    <svg xmlns="http://www.3w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                    Copy Account Number
-                </button>
-                <p id="copy-feedback" class="text-center text-green-400 text-sm mt-3 h-5 font-medium transition-opacity duration-300 opacity-0"></p>
-            </div>
-        </footer>
-
-    </div>
+    <!-- Hidden Input for Copying -->
+    <input type="text" id="copy-helper" style="position: absolute; left: -9999px;">
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Updated Data based on prompt
-            const invoiceData = {
-                shoot: { total: 10000, label: '4 hr shoot' },
-                equipment: { total: 8000, label: 'Equipments' },
-                edit: { total: 2000, label: 'Motion Graphics Edit' }
-            };
-
-            // Initialize Chart.js Doughnut Chart
-            const ctx = document.getElementById('invoiceChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Production (Shoot)', 'Equipment', 'Post-Production (Edit)'],
-                    datasets: [{
-                        data: [
-                            invoiceData.shoot.total,
-                            invoiceData.equipment.total,
-                            invoiceData.edit.total
-                        ],
-                        // Black, White, Golden color palette
-                        backgroundColor: ['#D4AF37', '#ffffff', '#555555'],
-                        borderColor: '#111111', 
-                        borderWidth: 4,
-                        hoverOffset: 10,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '75%',
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                font: {
-                                    size: 13,
-                                    family: "'Inter', sans-serif"
-                                },
-                                color: '#e5e5e5' 
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                            titleColor: '#D4AF37',
-                            bodyColor: '#ffffff',
-                            borderColor: '#333333',
-                            borderWidth: 1,
-                            padding: 12,
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed !== null) {
-                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'PKR' }).format(context.parsed);
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Tabs Logic
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabPanes = document.querySelectorAll('.tab-pane');
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('tab-active');
-                        btn.classList.add('tab-inactive');
-                    });
-                    button.classList.add('tab-active');
-                    button.classList.remove('tab-inactive');
-
-                    tabPanes.forEach(pane => {
-                        if (pane.id === button.dataset.tab) {
-                            pane.classList.remove('hidden');
-                        } else {
-                            pane.classList.add('hidden');
-                        }
-                    });
-                });
-            });
+        function copyToClipboard(text) {
+            const helper = document.getElementById('copy-helper');
+            helper.value = text;
+            helper.select();
+            document.execCommand('copy');
             
-            // Copy to Clipboard Logic
-            const copyButton = document.getElementById('copy-button');
-            const accountNumber = document.getElementById('account-number').innerText;
-            const copyFeedback = document.getElementById('copy-feedback');
-            
-            copyButton.addEventListener('click', () => {
-                // Using modern clipboard API with fallback
-                if (navigator.clipboard && window.isSecureContext) {
-                    navigator.clipboard.writeText(accountNumber).then(showFeedback);
-                } else {
-                    const tempInput = document.createElement('input');
-                    document.body.appendChild(tempInput);
-                    tempInput.value = accountNumber;
-                    tempInput.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempInput);
-                    showFeedback();
-                }
-                
-                function showFeedback() {
-                    copyFeedback.textContent = 'Account Number Copied!';
-                    copyFeedback.style.opacity = '1';
-                    setTimeout(() => {
-                        copyFeedback.style.opacity = '0';
-                    }, 2500);
-                }
-            });
+            const toast = document.getElementById('copy-toast');
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2000);
+        }
+
+        document.getElementById('confirm-btn').addEventListener('click', () => {
+            const toast = document.getElementById('copy-toast');
+            toast.innerText = "Please transfer the balance to the details provided.";
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
         });
     </script>
 </body>
 </html>
-
-
