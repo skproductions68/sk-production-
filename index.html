@@ -1,291 +1,453 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Productions - Project Completion & Payment</title>
+    <title>SK Productions - Automotive Retainer Packages</title>
+    <!-- Chosen Palette: Deep Black, Dark Graphite, Electric Amber, Pure White -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-black-bg: #050505;
-            --color-dark-card: #121212;
-            --color-gold: #D4AF37; 
-            --color-text-white: #FFFFFF;
+            --bg-main: #050505;
+            --color-accent: #f59e0b; /* Amber 500 */
+            --color-accent-hover: #d97706; /* Amber 600 */
+            --text-main: #ffffff;
         }
         
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--color-black-bg);
-            color: var(--color-text-white);
-            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #050505 70%);
-            background-attachment: fixed;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            position: relative;
+            overflow-x: hidden;
         }
 
-        .proposal-card {
-            background-color: var(--color-dark-card);
-            border: 1px solid #27272a;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        /* --- LIQUID GLASS EFFECTS --- */
+        .glass-card {
+            background: rgba(30, 30, 30, 0.3);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .gold-gradient-text {
-            background: linear-gradient(to bottom right, #D4AF37, #F1C40F, #B8860B);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: rgba(40, 40, 40, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
         }
 
-        .btn-gold {
-            background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
-            color: black;
+        .premium-glass {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(20, 20, 20, 0.4) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(245, 158, 11, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .premium-glass:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(30, 30, 30, 0.5) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.6);
+            box-shadow: 0 12px 40px 0 rgba(245, 158, 11, 0.25);
+        }
+
+        .modal-glass {
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 24px 64px 0 rgba(0, 0, 0, 0.8);
+        }
+        /* --------------------------- */
+
+        /* --- BUTTON ANIMATIONS (Tactile Press) --- */
+        .btn-accent, .btn-outline {
+            transform: scale(1);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform; /* Optimizes animation */
         }
 
-        .btn-gold:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
-            filter: brightness(1.1);
+        .btn-accent {
+            background-color: var(--color-accent);
+            color: #000;
         }
 
-        .btn-copy {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--color-gold);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            transition: all 0.2s ease;
+        .btn-accent:hover {
+            background-color: var(--color-accent-hover);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
         }
 
-        .btn-copy:hover {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: var(--color-gold);
+        .btn-outline {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .check-icon { color: var(--color-gold); }
-
-        .timeline-line {
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #15803d; /* Green for completed path */
+        .btn-outline:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            background: rgba(245, 158, 11, 0.05);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Tactile Press State */
+        .btn-accent:active, .btn-outline:active {
+            transform: scale(0.94); /* Squishes down like a real button */
+            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* ----------------------------------------- */
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
         }
 
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease forwards;
-        }
-
-        .copy-notification {
+        /* Ambient Background Orbs */
+        .ambient-orb {
             position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--color-gold);
-            color: black;
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            font-weight: bold;
-            font-size: 0.875rem;
-            display: none;
-            z-index: 100;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* --- iOS APP OPENING STYLE MODAL --- */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            
+            /* Hidden by default using visibility to allow transitions */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .modal-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            /* Start small and slightly shifted down */
+            transform: scale(0.75) translateY(20px);
+            opacity: 0;
+            
+            /* Apple-style spring/fluid easing curve */
+            transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1); 
+            max-height: 90vh;
+            overflow-y: auto;
+            transform-origin: center;
+        }
+
+        .modal-backdrop.show .modal-content {
+            /* Expand to full size */
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        /* ------------------------------------- */
+
+        /* Custom Scrollbar for Modal */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-accent); 
         }
     </style>
 </head>
-<body class="antialiased min-h-screen pb-20">
+<body class="antialiased min-h-screen flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
 
-    <div id="copy-toast" class="copy-notification">Account Number Copied!</div>
+    <!-- Background Dynamic Glows to refract through the glass -->
+    <div class="ambient-orb top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#f59e0b] opacity-20"></div>
+    <div class="ambient-orb top-[40%] right-[-10%] w-[40vw] h-[40vw] bg-[#3b82f6] opacity-10"></div>
+    <div class="ambient-orb bottom-[-20%] left-[20%] w-[60vw] h-[60vw] bg-[#f59e0b] opacity-10"></div>
 
-    <!-- Header Section -->
-    <header class="pt-16 pb-12 px-6 text-center animate-fade-in">
-        <div class="inline-block mb-4">
-            <svg class="w-12 h-12 text-[#D4AF37] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-        </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tighter mb-4">
-            SK <span class="gold-gradient-text">PRODUCTIONS</span>
-        </h1>
-        <div class="h-1 w-20 bg-[#D4AF37] mx-auto rounded-full mb-4"></div>
-        <div class="flex flex-col items-center justify-center gap-2 mb-4">
-            <span class="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
-                Project Status: Fully Completed
-            </span>
-        </div>
-    </header>
-
-    <main class="max-w-5xl mx-auto px-4 md:px-6 space-y-12">
+    <div class="max-w-4xl w-full relative z-10">
         
-        <!-- Main Proposal Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <!-- Details Column -->
-            <div class="lg:col-span-2 space-y-8">
-                <div class="proposal-card p-8 md:p-10 rounded-3xl animate-fade-in">
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="text-xs font-bold uppercase tracking-widest text-gray-500">Proposal ID: #SK-2024-ATM</span>
-                    </div>
-                    
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Corporate Event Coverage</h2>
-                    
-                    <!-- Paid Status Summary -->
-                    <div class="bg-[#1a1a1a] border border-gray-800 rounded-2xl p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                        <div>
-                            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Advance Received</p>
-                            <p class="text-2xl font-bold text-white flex items-center gap-2">
-                                PKR 15,000 
-                                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                            </p>
-                        </div>
-                        <div class="hidden md:block w-px h-10 bg-gray-800"></div>
-                        <div class="text-right">
-                            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Final Balance Outstanding</p>
-                            <p class="text-2xl font-bold text-[#D4AF37]">PKR 10,000</p>
-                        </div>
+        <header class="text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-2">
+                <span class="italic text-[#f59e0b] text-glow">SK</span> Productions
+            </h1>
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-200">
+                Automotive <span class="text-[#f59e0b] text-glow">Media Packages</span>
+            </h2>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                Purpose-built content and management tiers designed specifically for automotive showrooms. Choose exactly what your dealership needs.
+            </p>
+        </header>
+
+        <main>
+            <!-- 1-Column Stacked Grid for Packages -->
+            <section class="flex flex-col gap-10 items-stretch">
+                
+                <!-- Tier 1: Full Automation (Highly Recommended) - PLACED ABOVE -->
+                <div class="premium-glass p-8 md:p-10 rounded-3xl relative flex flex-col md:flex-row cursor-default">
+                    <!-- Badge -->
+                    <div class="absolute -top-4 left-8 bg-[#f59e0b] text-black text-sm font-extrabold px-6 py-1.5 rounded-full uppercase tracking-wider shadow-[0_0_15px_rgba(245,158,11,0.5)]">
+                        Highly Recommended
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                        <div class="p-5 bg-[#1a1a1a] rounded-2xl border border-gray-800">
-                            <h4 class="text-gray-500 text-xs font-bold uppercase mb-3 tracking-widest">Video Production</h4>
-                            <ul class="space-y-3">
-                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> 4K Cinematic Highlight Reel</li>
-                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> Professional Color Grading</li>
-                            </ul>
-                        </div>
-                        <div class="p-5 bg-[#1a1a1a] rounded-2xl border border-gray-800">
-                            <h4 class="text-gray-500 text-xs font-bold uppercase mb-3 tracking-widest">Photography</h4>
-                            <ul class="space-y-3">
-                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> Full Event Candid Coverage</li>
-                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> Stage & Keynote Moments</li>
-                                <li class="flex items-center text-sm"><span class="check-icon mr-2">✦</span> High-Res Digital Delivery</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-                        Project History
-                    </h3>
-                    
-                    <div class="relative space-y-8 mb-4">
-                        <div class="timeline-line"></div>
+                    <!-- Left Column: Pricing & Info -->
+                    <div class="md:w-5/12 pr-0 md:pr-8 mb-8 md:mb-0 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-center">
+                        <h3 class="text-3xl font-bold mb-2 text-[#f59e0b]">Full Automation Tier</h3>
+                        <p class="text-gray-300 mb-6 text-sm">Complete hands-off social media management, brand promotion, and automated posting.</p>
                         
-                        <!-- Step 1 -->
-                        <div class="relative flex items-start pl-10">
-                            <div class="absolute left-0 w-8 h-8 bg-green-500 border border-green-400 rounded-full flex items-center justify-center z-10">
-                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                            </div>
-                            <div>
-                                <h5 class="font-bold text-white">Booking & Advance</h5>
-                                <p class="text-sm text-gray-500">PKR 15,000 received. Project initiated.</p>
-                            </div>
+                        <div class="mb-8">
+                            <span class="text-5xl md:text-6xl font-extrabold tracking-tight">PKR 95k</span>
+                            <span class="text-gray-400 font-medium block mt-1">/month</span>
                         </div>
 
-                        <!-- Step 2 -->
-                        <div class="relative flex items-start pl-10">
-                            <div class="absolute left-0 w-8 h-8 bg-green-500 border border-green-400 rounded-full flex items-center justify-center z-10">
-                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                            </div>
-                            <div>
-                                <h5 class="font-bold text-white">Production Phase</h5>
-                                <p class="text-sm text-gray-500">Live event coverage and primary media capture completed.</p>
-                            </div>
-                        </div>
-
-                        <!-- Step 3 -->
-                        <div class="relative flex items-start pl-10">
-                            <div class="absolute left-0 w-8 h-8 bg-green-500 border border-green-400 rounded-full flex items-center justify-center z-10">
-                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                            </div>
-                            <div>
-                                <h5 class="font-bold text-white">Final Post-Production</h5>
-                                <p class="text-sm text-gray-500">Editing, color grading, and exports ready for delivery.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Account Details Column -->
-            <div class="space-y-6">
-                <div class="proposal-card p-8 rounded-3xl sticky top-8 animate-fade-in" style="animation-delay: 0.2s">
-                    <h3 class="text-xl font-bold mb-6 text-center">Payment Details</h3>
-                    
-                    <div class="space-y-6">
-                        <!-- Account Box -->
-                        <div class="p-5 bg-[#1a1a1a] rounded-2xl border border-gray-800 space-y-4">
-                            <div>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Account Title</p>
-                                <p class="text-white font-medium">MANSOOR ANWAR KHAN</p>
-                            </div>
-                            
-                            <div>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Bank Name</p>
-                                <p class="text-white font-medium">Bank Al Habib</p>
-                            </div>
-
-                            <div>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Account Number</p>
-                                <div class="flex items-center justify-between gap-2 mt-1">
-                                    <p id="acc-no" class="text-lg font-mono font-bold gold-gradient-text">10170981028974018</p>
-                                    <button onclick="copyToClipboard('10170981028974018')" class="btn-copy p-2 rounded-lg" title="Copy Account Number">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-green-500/5 border border-green-500/10 rounded-xl">
-                            <p class="text-[10px] text-green-500/80 uppercase tracking-widest font-bold mb-2">Final Settlement</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-400">Amount Due:</span>
-                                <span class="text-xl font-bold text-white">PKR 10,000</span>
-                            </div>
-                        </div>
-
-                        <button id="confirm-btn" class="btn-gold w-full py-4 rounded-xl font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2">
-                            Finalize Project
-                        </button>
+                        <!-- Active Animation Button -->
+                        <button class="visualize-btn btn-accent w-full py-4 rounded-xl font-bold text-lg mt-auto select-none" data-package="automation">View Full Breakdown</button>
                     </div>
 
-                    <p class="mt-6 text-[10px] text-center text-gray-600 uppercase tracking-tighter">
-                        Assets will be shared immediately upon payment confirmation.
-                    </p>
+                    <!-- Right Column: Quick Features -->
+                    <div class="md:w-7/12 pl-0 md:pl-8 flex flex-col justify-center">
+                        <ul class="space-y-5 text-gray-200">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#f59e0b] mr-3 mt-0.5 shrink-0 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Total Automation:</strong> Daily posts across all major platforms + 2-3 backup posts per week.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#f59e0b] mr-3 mt-0.5 shrink-0 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Complete Media:</strong> Photo, Video, Posters & Custom Thumbnails for every event and arrival.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#f59e0b] mr-3 mt-0.5 shrink-0 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Brand Growth:</strong> Edits to promote showroom identity, plus Meta Ad Management.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#f59e0b] mr-3 mt-0.5 shrink-0 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Cloud Access:</strong> All assets saved on a drive accessible anytime.</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+
+                <!-- Tier 2: Core Media - PLACED BELOW -->
+                <div class="glass-card p-8 md:p-10 rounded-3xl flex flex-col md:flex-row cursor-default">
+                    <!-- Left Column: Pricing & Info -->
+                    <div class="md:w-5/12 pr-0 md:pr-8 mb-8 md:mb-0 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-center">
+                        <h3 class="text-3xl font-bold mb-2">Core Media Tier</h3>
+                        <p class="text-gray-300 mb-6 text-sm">Essential media production and simple posting targeted at your specific car stock.</p>
+                        
+                        <div class="mb-8">
+                            <span class="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-100">PKR 50k</span>
+                            <span class="text-gray-400 font-medium block mt-1">/month</span>
+                        </div>
+
+                        <!-- Active Animation Button -->
+                        <button class="visualize-btn btn-outline w-full py-4 rounded-xl font-bold text-lg mt-auto select-none" data-package="core">View Details</button>
+                    </div>
+
+                    <!-- Right Column: Quick Features -->
+                    <div class="md:w-7/12 pl-0 md:pl-8 flex flex-col justify-center">
+                        <ul class="space-y-5 text-gray-300">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-white mr-3 mt-0.5 shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>7 Car Videos</strong> (Dedicated showcase clips per car)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-white mr-3 mt-0.5 shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>10-15 Edited Pictures</strong> extracted per vehicle session</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-white mr-3 mt-0.5 shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Simple content posting on <strong>Instagram & Facebook</strong></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+        
+        <footer class="text-center mt-16 border-t border-white/10 pt-8 text-gray-400 text-sm">
+            <p>&copy; 2026 SK Productions. Transparent pricing for premium automotive media.</p>
+        </footer>
+
+    </div>
+
+    <!-- Dynamic Detail Modal (iOS App Open Style) -->
+    <div id="detail-modal" class="modal-backdrop">
+        <div class="modal-content modal-glass w-full max-w-2xl p-6 md:p-10 rounded-3xl">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-start mb-6 border-b border-white/10 pb-4">
+                <div>
+                    <h2 class="text-sm font-bold text-[#f59e0b] uppercase tracking-wider mb-1">Package Breakdown</h2>
+                    <h3 id="modal-title" class="text-3xl font-extrabold text-white"></h3>
+                </div>
+                <!-- Adding squish animation to close button as well -->
+                <button id="close-modal" class="btn-outline text-gray-400 hover:text-white transition-colors p-2 bg-white/5 hover:bg-white/10 rounded-full leading-none backdrop-blur-sm">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Dynamic Content Container -->
+            <div id="modal-body" class="space-y-8 relative z-10">
+                <!-- Content injected via JS -->
             </div>
 
+            <!-- Footer -->
+            <div class="mt-8 pt-6 border-t border-white/10 flex justify-between items-center bg-white/5 backdrop-blur-md p-6 rounded-2xl">
+                <span class="text-lg font-bold text-gray-200">Total Monthly Investment</span>
+                <span id="modal-price" class="text-3xl font-extrabold text-[#f59e0b] text-glow"></span>
+            </div>
         </div>
-
-    </main>
-
-    <!-- Hidden Input for Copying -->
-    <input type="text" id="copy-helper" style="position: absolute; left: -9999px;">
+    </div>
 
     <script>
-        function copyToClipboard(text) {
-            const helper = document.getElementById('copy-helper');
-            helper.value = text;
-            helper.select();
-            document.execCommand('copy');
-            
-            const toast = document.getElementById('copy-toast');
-            toast.style.display = 'block';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 2000);
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Detailed breakdown data for both tiers
+            const packageData = {
+                core: {
+                    title: "Core Media Tier",
+                    price: "PKR 50,000",
+                    sections: [
+                        {
+                            heading: "Media Production",
+                            items: [
+                                "Professional Video production for exactly 7 specific cars.",
+                                "High-resolution Photography (10 to 15 edited pictures per car)."
+                            ]
+                        },
+                        {
+                            heading: "Social Media Management",
+                            items: [
+                                "Simple, direct posting of the produced content.",
+                                "Platforms managed: Instagram & Facebook only."
+                            ]
+                        }
+                    ]
+                },
+                automation: {
+                    title: "Full Automation Tier",
+                    price: "PKR 95,000",
+                    sections: [
+                        {
+                            heading: "Complete Content Pipeline",
+                            items: [
+                                "<strong>Guaranteed Consistency:</strong> At least 1 high-quality post every single day.",
+                                "<strong>Strategic Backups:</strong> 2-3 backup posts per week prepared for dry spells (when no new cars arrive).",
+                                "<strong>Total Event Coverage:</strong> Photography, videography, and posters for any automotive market events or showroom announcements.",
+                                "<strong>Brand Focus:</strong> Main car edits and creatives designed specifically to promote the showroom's name and brand identity, not just direct car sales.",
+                                "<strong>Custom Graphics:</strong> Professionally designed custom thumbnails for every video post."
+                            ]
+                        },
+                        {
+                            heading: "Total Platform Management",
+                            items: [
+                                "All posting, scheduling, and content distribution completely automated.",
+                                "<strong>Platforms Included:</strong> Instagram, Facebook, TikTok, Pakwheels, and LinkedIn.",
+                                "<strong>Meta Ad Campaigns:</strong> Complete setup and management of targeted advertising campaigns.",
+                                "<strong>Inventory Sync:</strong> All incoming car stock will be documented and posted accordingly without you lifting a finger."
+                            ]
+                        },
+                        {
+                            heading: "Asset Management",
+                            items: [
+                                "<strong>Cloud Storage:</strong> All videos and pictures recorded will be saved on a secure, organized drive.",
+                                "<strong>24/7 Access:</strong> You maintain full, anytime access to all your raw and edited digital assets."
+                            ]
+                        }
+                    ]
+                }
+            };
 
-        document.getElementById('confirm-btn').addEventListener('click', () => {
-            const toast = document.getElementById('copy-toast');
-            toast.innerText = "Please transfer the balance to the details provided.";
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+            const visualizeBtns = document.querySelectorAll('.visualize-btn');
+            const modal = document.getElementById('detail-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const modalBody = document.getElementById('modal-body');
+
+            function openModal(packageKey) {
+                const data = packageData[packageKey];
+                
+                // Set Headers and Prices
+                document.getElementById('modal-title').textContent = data.title;
+                document.getElementById('modal-price').textContent = data.price;
+                
+                // Generate Body Content
+                modalBody.innerHTML = ''; 
+                
+                data.sections.forEach(section => {
+                    const sectionDiv = document.createElement('div');
+                    
+                    const heading = document.createElement('h4');
+                    heading.className = 'text-xl font-bold text-white mb-3 flex items-center';
+                    heading.innerHTML = `<span class="w-2 h-2 bg-[#f59e0b] rounded-full mr-3 shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span> ${section.heading}`;
+                    
+                    const list = document.createElement('ul');
+                    list.className = 'space-y-3 text-gray-300 pl-5';
+                    
+                    section.items.forEach(item => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-start';
+                        li.innerHTML = `<svg class="w-5 h-5 text-gray-400 mr-3 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg> <span>${item}</span>`;
+                        list.appendChild(li);
+                    });
+                    
+                    sectionDiv.appendChild(heading);
+                    sectionDiv.appendChild(list);
+                    modalBody.appendChild(sectionDiv);
+                });
+
+                // Show Modal using CSS class toggle for animations
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+
+            function closeModal() {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto'; // Restore background scrolling
+            }
+
+            visualizeBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const packageKey = e.currentTarget.dataset.package;
+                    // Adding a tiny delay (100ms) before opening modal so the user sees the button "press" animation
+                    setTimeout(() => {
+                        openModal(packageKey);
+                    }, 100);
+                });
+            });
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Close modal on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    closeModal();
+                }
+            });
         });
     </script>
 </body>
 </html>
+
+
+
+
