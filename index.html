@@ -1,453 +1,556 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Productions - Automotive Retainer Packages</title>
-    <!-- Chosen Palette: Deep Black, Dark Graphite, Electric Amber, Pure White -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-main: #050505;
-            --color-accent: #f59e0b; /* Amber 500 */
-            --color-accent-hover: #d97706; /* Amber 600 */
-            --text-main: #ffffff;
-        }
-        
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            position: relative;
-            overflow-x: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SK Productions — Restaurant Media Packages</title>
+<!-- Palette: Espresso Black, Warm Graphite, Honey Gold, Ember Terracotta, Cream -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0908;
+    --bg-2:#131010;
+    --gold:#e6b15e;
+    --gold-soft:#f0c987;
+    --ember:#c2552c;
+    --cream:#f5ede1;
+    --muted:#9a8b79;
+    --line:rgba(245,237,225,0.10);
+  }
+  *{ -webkit-tap-highlight-color: transparent; }
+  body{
+    font-family:'Inter',sans-serif;
+    background-color:var(--bg);
+    color:var(--cream);
+    overflow-x:hidden;
+    position:relative;
+  }
+  .font-display{ font-family:'Fraunces',serif; }
 
-        /* --- LIQUID GLASS EFFECTS --- */
-        .glass-card {
-            background: rgba(30, 30, 30, 0.3);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+  /* warm ambient glows */
+  .orb{ position:fixed; border-radius:50%; filter:blur(130px); pointer-events:none; z-index:0; }
+  .orb-gold{ background:#e6b15e; }
+  .orb-ember{ background:#c2552c; }
+  @keyframes drift{ 0%,100%{ transform:translate(0,0);} 50%{ transform:translate(3%,4%);} }
+  .drift{ animation:drift 22s ease-in-out infinite; }
 
-        .glass-card:hover {
-            transform: translateY(-4px);
-            background: rgba(40, 40, 40, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
-        }
+  /* grain to keep the dark from feeling flat */
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 
-        .premium-glass {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(20, 20, 20, 0.4) 100%);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            box-shadow: 0 8px 32px 0 rgba(245, 158, 11, 0.15);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+  /* glass cards */
+  .glass{
+    background:rgba(28,22,18,0.42);
+    backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px);
+    border:1px solid var(--line);
+    box-shadow:0 10px 36px rgba(0,0,0,0.45);
+    transition:transform .4s cubic-bezier(.4,0,.2,1), border-color .4s, box-shadow .4s, background .4s;
+  }
 
-        .premium-glass:hover {
-            transform: translateY(-4px);
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(30, 30, 30, 0.5) 100%);
-            border: 1px solid rgba(245, 158, 11, 0.6);
-            box-shadow: 0 12px 40px 0 rgba(245, 158, 11, 0.25);
-        }
+  /* selectable module card */
+  .module{ cursor:pointer; }
+  .module:hover{ transform:translateY(-3px); border-color:rgba(245,237,225,0.2); }
+  .module.selected{
+    border-color:rgba(230,177,94,0.6);
+    background:linear-gradient(135deg, rgba(230,177,94,0.10) 0%, rgba(20,16,14,0.5) 60%);
+    box-shadow:0 12px 40px rgba(230,177,94,0.12);
+  }
 
-        .modal-glass {
-            background: rgba(15, 15, 15, 0.7);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 24px 64px 0 rgba(0, 0, 0, 0.8);
-        }
-        /* --------------------------- */
+  /* add / added pill */
+  .pill{
+    display:inline-flex; align-items:center; gap:.4rem;
+    font-size:.72rem; font-weight:600; letter-spacing:.04em;
+    padding:.4rem .8rem; border-radius:999px;
+    border:1px solid rgba(245,237,225,0.22);
+    color:var(--muted); background:rgba(245,237,225,0.04);
+    transition:all .25s ease;
+  }
+  .module.selected .pill{
+    border-color:transparent; background:var(--gold); color:#1a1209;
+  }
+  .pill .check{ display:none; }
+  .pill .plus{ display:inline; }
+  .module.selected .pill .check{ display:inline; }
+  .module.selected .pill .plus{ display:none; }
 
-        /* --- BUTTON ANIMATIONS (Tactile Press) --- */
-        .btn-accent, .btn-outline {
-            transform: scale(1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform; /* Optimizes animation */
-        }
+  /* tactile buttons */
+  .btn{ transition:all .25s cubic-bezier(.4,0,.2,1); will-change:transform; }
+  .btn:active{ transform:scale(.95); transition:transform .1s; }
+  .btn-gold{ background:var(--gold); color:#1a1209; font-weight:700; }
+  .btn-gold:hover{ background:var(--gold-soft); box-shadow:0 0 22px rgba(230,177,94,0.35); }
+  .btn-ghost{ border:1px solid rgba(245,237,225,0.18); color:var(--cream); background:rgba(245,237,225,0.04); }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold-soft); }
 
-        .btn-accent {
-            background-color: var(--color-accent);
-            color: #000;
-        }
+  .eyebrow{ font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+  .text-glow{ text-shadow:0 0 26px rgba(230,177,94,0.4); }
 
-        .btn-accent:hover {
-            background-color: var(--color-accent-hover);
-            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
-        }
+  /* the signature: menu-style dotted leader line */
+  .leader{ display:flex; align-items:baseline; gap:.6rem; }
+  .leader .nm{ color:var(--cream); }
+  .leader .dots{ flex:1; border-bottom:1px dotted rgba(245,237,225,0.3); transform:translateY(-3px); }
+  .leader .pr{ font-family:'Fraunces',serif; font-weight:600; color:var(--gold-soft); white-space:nowrap; }
 
-        .btn-outline {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--text-main);
-            background: rgba(255, 255, 255, 0.05);
-        }
+  /* sticky summary */
+  .summary{
+    position:fixed; left:0; right:0; bottom:0; z-index:40;
+    background:rgba(11,9,8,0.78);
+    backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border-top:1px solid var(--line);
+    transition:transform .5s cubic-bezier(.32,.72,0,1);
+  }
 
-        .btn-outline:hover {
-            border-color: var(--color-accent);
-            color: var(--color-accent);
-            background: rgba(245, 158, 11, 0.05);
-        }
+  /* modal (iOS spring open) */
+  .modal-bd{ position:fixed; inset:0; background:rgba(0,0,0,.62); display:flex; justify-content:center; align-items:center;
+    z-index:60; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease; padding:1rem; }
+  .modal-bd.show{ opacity:1; visibility:visible; }
+  .modal-ct{ transform:scale(.78) translateY(18px); opacity:0; transition:all .5s cubic-bezier(.32,.72,0,1);
+    max-height:88vh; overflow-y:auto;
+    background:rgba(15,12,10,0.82); backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px);
+    border:1px solid rgba(245,237,225,0.14); box-shadow:0 24px 70px rgba(0,0,0,.7); }
+  .modal-bd.show .modal-ct{ transform:scale(1) translateY(0); opacity:1; }
 
-        /* Tactile Press State */
-        .btn-accent:active, .btn-outline:active {
-            transform: scale(0.94); /* Squishes down like a real button */
-            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        /* ----------------------------------------- */
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-thumb{ background:rgba(245,237,225,0.18); border-radius:4px; }
+  ::-webkit-scrollbar-thumb:hover{ background:var(--gold); }
 
-        .text-glow {
-            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
-        }
+  /* load reveal */
+  .reveal{ opacity:0; transform:translateY(16px); animation:rise .8s cubic-bezier(.32,.72,0,1) forwards; }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0);} }
 
-        /* Ambient Background Orbs */
-        .ambient-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            pointer-events: none;
-            z-index: -1;
-        }
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radius:8px; }
 
-        /* --- iOS APP OPENING STYLE MODAL --- */
-        .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 50;
-            
-            /* Hidden by default using visibility to allow transitions */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-
-        .modal-backdrop.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            /* Start small and slightly shifted down */
-            transform: scale(0.75) translateY(20px);
-            opacity: 0;
-            
-            /* Apple-style spring/fluid easing curve */
-            transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1); 
-            max-height: 90vh;
-            overflow-y: auto;
-            transform-origin: center;
-        }
-
-        .modal-backdrop.show .modal-content {
-            /* Expand to full size */
-            transform: scale(1) translateY(0);
-            opacity: 1;
-        }
-        /* ------------------------------------- */
-
-        /* Custom Scrollbar for Modal */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2); 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--color-accent); 
-        }
-    </style>
+  @media (prefers-reduced-motion: reduce){
+    .drift{ animation:none; }
+    .reveal{ animation:none; opacity:1; transform:none; }
+    *{ scroll-behavior:auto; }
+  }
+</style>
 </head>
-<body class="antialiased min-h-screen flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+<body class="antialiased min-h-screen pb-32">
 
-    <!-- Background Dynamic Glows to refract through the glass -->
-    <div class="ambient-orb top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#f59e0b] opacity-20"></div>
-    <div class="ambient-orb top-[40%] right-[-10%] w-[40vw] h-[40vw] bg-[#3b82f6] opacity-10"></div>
-    <div class="ambient-orb bottom-[-20%] left-[20%] w-[60vw] h-[60vw] bg-[#f59e0b] opacity-10"></div>
+  <div class="orb orb-gold drift top-[-12%] left-[-8%] w-[46vw] h-[46vw] opacity-[0.18]"></div>
+  <div class="orb orb-ember top-[55%] right-[-12%] w-[42vw] h-[42vw] opacity-[0.14]"></div>
+  <div class="orb orb-gold bottom-[-18%] left-[18%] w-[50vw] h-[50vw] opacity-[0.08]"></div>
 
-    <div class="max-w-4xl w-full relative z-10">
-        
-        <header class="text-center mb-16">
-            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-2">
-                <span class="italic text-[#f59e0b] text-glow">SK</span> Productions
-            </h1>
-            <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-200">
-                Automotive <span class="text-[#f59e0b] text-glow">Media Packages</span>
-            </h2>
-            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-                Purpose-built content and management tiers designed specifically for automotive showrooms. Choose exactly what your dealership needs.
-            </p>
-        </header>
+  <div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-8 py-14">
 
-        <main>
-            <!-- 1-Column Stacked Grid for Packages -->
-            <section class="flex flex-col gap-10 items-stretch">
-                
-                <!-- Tier 1: Full Automation (Highly Recommended) - PLACED ABOVE -->
-                <div class="premium-glass p-8 md:p-10 rounded-3xl relative flex flex-col md:flex-row cursor-default">
-                    <!-- Badge -->
-                    <div class="absolute -top-4 left-8 bg-[#f59e0b] text-black text-sm font-extrabold px-6 py-1.5 rounded-full uppercase tracking-wider shadow-[0_0_15px_rgba(245,158,11,0.5)]">
-                        Highly Recommended
-                    </div>
+    <!-- HERO -->
+    <header class="reveal mb-20 text-center">
+      <p class="eyebrow mb-5">SK Productions &nbsp;·&nbsp; Media Partnership</p>
+      <h1 class="font-display text-[2.7rem] leading-[1.05] sm:text-6xl font-semibold tracking-tight mb-6">
+        Make your restaurant<br>
+        <span class="italic text-[var(--gold)] text-glow">impossible to scroll past.</span>
+      </h1>
+      <p class="text-base sm:text-lg text-[var(--muted)] max-w-2xl mx-auto leading-relaxed">
+        Two ways to work together. A one-time foundation that gets your brand looking
+        world-class, and a monthly retainer that keeps the content — and the customers — coming.
+        Tap to build your package; the total updates as you go.
+      </p>
+    </header>
 
-                    <!-- Left Column: Pricing & Info -->
-                    <div class="md:w-5/12 pr-0 md:pr-8 mb-8 md:mb-0 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-center">
-                        <h3 class="text-3xl font-bold mb-2 text-[#f59e0b]">Full Automation Tier</h3>
-                        <p class="text-gray-300 mb-6 text-sm">Complete hands-off social media management, brand promotion, and automated posting.</p>
-                        
-                        <div class="mb-8">
-                            <span class="text-5xl md:text-6xl font-extrabold tracking-tight">PKR 95k</span>
-                            <span class="text-gray-400 font-medium block mt-1">/month</span>
-                        </div>
-
-                        <!-- Active Animation Button -->
-                        <button class="visualize-btn btn-accent w-full py-4 rounded-xl font-bold text-lg mt-auto select-none" data-package="automation">View Full Breakdown</button>
-                    </div>
-
-                    <!-- Right Column: Quick Features -->
-                    <div class="md:w-7/12 pl-0 md:pl-8 flex flex-col justify-center">
-                        <ul class="space-y-5 text-gray-200">
-                            <li class="flex items-start">
-                                <svg class="w-6 h-6 text-[#f59e0b] mr-3 mt-0.5 shrink-0 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span><strong>Total Automation:</strong> Daily posts across all major platforms + 2-3 backup posts per week.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-6 h-6 text-[#f59e0b] mr-3 mt-0.5 shrink-0 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span><strong>Complete Media:</strong> Photo, Video, Posters & Custom Thumbnails for every event and arrival.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-6 h-6 text-[#f59e0b] mr-3 mt-0.5 shrink-0 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span><strong>Brand Growth:</strong> Edits to promote showroom identity, plus Meta Ad Management.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-6 h-6 text-[#f59e0b] mr-3 mt-0.5 shrink-0 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span><strong>Cloud Access:</strong> All assets saved on a drive accessible anytime.</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Tier 2: Core Media - PLACED BELOW -->
-                <div class="glass-card p-8 md:p-10 rounded-3xl flex flex-col md:flex-row cursor-default">
-                    <!-- Left Column: Pricing & Info -->
-                    <div class="md:w-5/12 pr-0 md:pr-8 mb-8 md:mb-0 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-center">
-                        <h3 class="text-3xl font-bold mb-2">Core Media Tier</h3>
-                        <p class="text-gray-300 mb-6 text-sm">Essential media production and simple posting targeted at your specific car stock.</p>
-                        
-                        <div class="mb-8">
-                            <span class="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-100">PKR 50k</span>
-                            <span class="text-gray-400 font-medium block mt-1">/month</span>
-                        </div>
-
-                        <!-- Active Animation Button -->
-                        <button class="visualize-btn btn-outline w-full py-4 rounded-xl font-bold text-lg mt-auto select-none" data-package="core">View Details</button>
-                    </div>
-
-                    <!-- Right Column: Quick Features -->
-                    <div class="md:w-7/12 pl-0 md:pl-8 flex flex-col justify-center">
-                        <ul class="space-y-5 text-gray-300">
-                            <li class="flex items-start">
-                                <svg class="w-6 h-6 text-white mr-3 mt-0.5 shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span><strong>7 Car Videos</strong> (Dedicated showcase clips per car)</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-6 h-6 text-white mr-3 mt-0.5 shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span><strong>10-15 Edited Pictures</strong> extracted per vehicle session</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-6 h-6 text-white mr-3 mt-0.5 shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span>Simple content posting on <strong>Instagram & Facebook</strong></span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-            </section>
-        </main>
-        
-        <footer class="text-center mt-16 border-t border-white/10 pt-8 text-gray-400 text-sm">
-            <p>&copy; 2026 SK Productions. Transparent pricing for premium automotive media.</p>
-        </footer>
-
-    </div>
-
-    <!-- Dynamic Detail Modal (iOS App Open Style) -->
-    <div id="detail-modal" class="modal-backdrop">
-        <div class="modal-content modal-glass w-full max-w-2xl p-6 md:p-10 rounded-3xl">
-            
-            <!-- Header -->
-            <div class="flex justify-between items-start mb-6 border-b border-white/10 pb-4">
-                <div>
-                    <h2 class="text-sm font-bold text-[#f59e0b] uppercase tracking-wider mb-1">Package Breakdown</h2>
-                    <h3 id="modal-title" class="text-3xl font-extrabold text-white"></h3>
-                </div>
-                <!-- Adding squish animation to close button as well -->
-                <button id="close-modal" class="btn-outline text-gray-400 hover:text-white transition-colors p-2 bg-white/5 hover:bg-white/10 rounded-full leading-none backdrop-blur-sm">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            
-            <!-- Dynamic Content Container -->
-            <div id="modal-body" class="space-y-8 relative z-10">
-                <!-- Content injected via JS -->
-            </div>
-
-            <!-- Footer -->
-            <div class="mt-8 pt-6 border-t border-white/10 flex justify-between items-center bg-white/5 backdrop-blur-md p-6 rounded-2xl">
-                <span class="text-lg font-bold text-gray-200">Total Monthly Investment</span>
-                <span id="modal-price" class="text-3xl font-extrabold text-[#f59e0b] text-glow"></span>
-            </div>
+    <!-- ============ SECTION 01 — FOUNDATION ============ -->
+    <section class="reveal mb-20" style="animation-delay:.08s">
+      <div class="flex items-end justify-between mb-8 border-b border-[var(--line)] pb-5">
+        <div>
+          <p class="eyebrow mb-2">Set it up once</p>
+          <h2 class="font-display text-3xl sm:text-4xl font-semibold">The Foundation</h2>
         </div>
+        <span class="font-display text-sm text-[var(--muted)]">01 — One-time</span>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Website -->
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="web" data-price="15000" data-recurring="false">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="font-display text-2xl font-semibold pr-3">Website Development</h3>
+            <button class="pill btn shrink-0" aria-pressed="true">
+              <span class="plus">+ Add</span>
+              <span class="check">✓ Added</span>
+            </button>
+          </div>
+          <p class="text-sm text-[var(--muted)] leading-relaxed mb-6">
+            A fast, mobile-first site with your menu, gallery, hours and location — built to turn
+            a Google search into a booking or a WhatsApp order.
+          </p>
+          <div class="mt-auto flex items-end justify-between">
+            <div>
+              <span class="font-display text-4xl font-semibold">PKR 15,000</span>
+              <span class="block text-xs text-[var(--muted)] mt-1">one-time</span>
+            </div>
+            <button class="details btn btn-ghost text-sm px-4 py-2 rounded-xl" data-key="web">Details</button>
+          </div>
+        </div>
+
+        <!-- Photography -->
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="photo" data-price="30000" data-recurring="false">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="font-display text-2xl font-semibold pr-3">Menu Photography</h3>
+            <button class="pill btn shrink-0" aria-pressed="true">
+              <span class="plus">+ Add</span>
+              <span class="check">✓ Added</span>
+            </button>
+          </div>
+          <p class="text-sm text-[var(--muted)] leading-relaxed mb-6">
+            Every dish on your menu, shot properly and styled. Around 60 dishes at
+            PKR 500 each — yours to use anywhere.
+          </p>
+          <div class="mt-auto flex items-end justify-between">
+            <div>
+              <span class="font-display text-4xl font-semibold">PKR 30,000</span>
+              <span class="block text-xs text-[var(--muted)] mt-1">~60 dishes × PKR 500</span>
+            </div>
+            <button class="details btn btn-ghost text-sm px-4 py-2 rounded-xl" data-key="photo">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- optional add-ons -->
+      <p class="eyebrow mt-10 mb-4 opacity-80">Optional add-ons</p>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="module glass rounded-2xl p-5 flex items-center justify-between" data-id="gmb" data-price="8000" data-recurring="false">
+          <div class="pr-3">
+            <h4 class="font-semibold text-[var(--cream)]">Google Business &amp; Maps</h4>
+            <p class="text-xs text-[var(--muted)] mt-1">Profile, photos &amp; menu so you show up when people search nearby.</p>
+            <span class="font-display text-lg text-[var(--gold-soft)]">PKR 8,000</span>
+          </div>
+          <button class="pill btn shrink-0" aria-pressed="false">
+            <span class="plus">+ Add</span><span class="check">✓ Added</span>
+          </button>
+        </div>
+        <div class="module glass rounded-2xl p-5 flex items-center justify-between" data-id="qr" data-price="5000" data-recurring="false">
+          <div class="pr-3">
+            <h4 class="font-semibold text-[var(--cream)]">QR Digital Menu</h4>
+            <p class="text-xs text-[var(--muted)] mt-1">Scannable table menu you can update yourself — no reprints.</p>
+            <span class="font-display text-lg text-[var(--gold-soft)]">PKR 5,000</span>
+          </div>
+          <button class="pill btn shrink-0" aria-pressed="false">
+            <span class="plus">+ Add</span><span class="check">✓ Added</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="glass rounded-2xl mt-8 px-6 py-5 flex items-center justify-between">
+        <span class="text-sm font-medium text-[var(--muted)]">Foundation total</span>
+        <span class="font-display text-2xl font-semibold text-[var(--gold)]" id="onetime-total">PKR 45,000</span>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 02 — MONTHLY ============ -->
+    <section class="reveal mb-12" style="animation-delay:.16s">
+      <div class="flex items-end justify-between mb-8 border-b border-[var(--line)] pb-5">
+        <div>
+          <p class="eyebrow mb-2">Keep it growing</p>
+          <h2 class="font-display text-3xl sm:text-4xl font-semibold">Monthly Retainer</h2>
+        </div>
+        <span class="font-display text-sm text-[var(--muted)]">02 — Recurring</span>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Video -->
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="video" data-price="50000" data-recurring="true">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="font-display text-xl font-semibold pr-2">Cinematic Video</h3>
+            <button class="pill btn shrink-0" aria-pressed="true">
+              <span class="plus">+ Add</span><span class="check">✓ Added</span>
+            </button>
+          </div>
+          <p class="text-sm text-[var(--muted)] leading-relaxed mb-5">
+            10 high-quality videos a month — cinematic ambience films, dish close-ups and reels.
+          </p>
+          <div class="mt-auto">
+            <span class="font-display text-3xl font-semibold">PKR 50,000</span>
+            <span class="block text-xs text-[var(--muted)] mt-1">/month · single video PKR 6,500</span>
+            <button class="details btn btn-ghost text-sm px-4 py-2 rounded-xl mt-4 w-full" data-key="video">Details</button>
+          </div>
+        </div>
+
+        <!-- Management -->
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="mgmt" data-price="20000" data-recurring="true">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="font-display text-xl font-semibold pr-2">Management &amp; Campaigns</h3>
+            <button class="pill btn shrink-0" aria-pressed="true">
+              <span class="plus">+ Add</span><span class="check">✓ Added</span>
+            </button>
+          </div>
+          <p class="text-sm text-[var(--muted)] leading-relaxed mb-5">
+            We run the accounts end to end — posting, replies and paid Meta campaigns that fill tables.
+          </p>
+          <div class="mt-auto">
+            <span class="font-display text-3xl font-semibold">PKR 20,000</span>
+            <span class="block text-xs text-[var(--muted)] mt-1">/month · ad budget separate</span>
+            <button class="details btn btn-ghost text-sm px-4 py-2 rounded-xl mt-4 w-full" data-key="mgmt">Details</button>
+          </div>
+        </div>
+
+        <!-- Photos -->
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="pics" data-price="5000" data-recurring="true">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="font-display text-xl font-semibold pr-2">Photo Content</h3>
+            <button class="pill btn shrink-0" aria-pressed="true">
+              <span class="plus">+ Add</span><span class="check">✓ Added</span>
+            </button>
+          </div>
+          <p class="text-sm text-[var(--muted)] leading-relaxed mb-5">
+            15 fresh posts a month — new dishes, specials, BTS and festive graphics.
+          </p>
+          <div class="mt-auto">
+            <span class="font-display text-3xl font-semibold">PKR 5,000</span>
+            <span class="block text-xs text-[var(--muted)] mt-1">/month · 15 posts</span>
+            <button class="details btn btn-ghost text-sm px-4 py-2 rounded-xl mt-4 w-full" data-key="pics">Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- bundle note + monthly total -->
+      <div class="glass rounded-2xl mt-8 px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <span class="text-sm font-medium text-[var(--cream)]" id="monthly-label">Complete Retainer — all three</span>
+          <span class="block text-xs text-[var(--ember)] font-semibold mt-1" id="bundle-note">You're saving PKR 5,000/month vs à la carte</span>
+        </div>
+        <div class="text-right">
+          <span class="font-display text-2xl font-semibold text-[var(--gold)]" id="monthly-total">PKR 70,000</span>
+          <span class="text-sm text-[var(--muted)]" id="monthly-strike"> &nbsp;<s class="text-[var(--muted)]/60">75,000</s></span>
+          <span class="block text-xs text-[var(--muted)]">per month</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="text-center mt-16 border-t border-[var(--line)] pt-8 text-[var(--muted)] text-sm">
+      <p>SK Productions · Karachi · Premium media for restaurants that want to be seen.</p>
+      <p class="mt-1 text-xs opacity-70">Meta ad spend is paid to Meta directly and billed separately from management.</p>
+    </footer>
+  </div>
+
+  <!-- STICKY SUMMARY -->
+  <div class="summary">
+    <div class="max-w-5xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-6 sm:gap-10 min-w-0">
+        <div class="min-w-0">
+          <p class="text-[0.65rem] uppercase tracking-wider text-[var(--muted)]">Setup</p>
+          <p class="font-display text-lg sm:text-xl font-semibold text-[var(--cream)] truncate" id="sum-onetime">PKR 45,000</p>
+        </div>
+        <div class="w-px h-9 bg-[var(--line)]"></div>
+        <div class="min-w-0">
+          <p class="text-[0.65rem] uppercase tracking-wider text-[var(--muted)]">Then monthly</p>
+          <p class="font-display text-lg sm:text-xl font-semibold text-[var(--gold)] truncate" id="sum-monthly">PKR 70,000<span class="text-xs text-[var(--muted)]">/mo</span></p>
+        </div>
+      </div>
+      <a href="https://wa.me/" target="_blank" rel="noopener" class="btn btn-gold px-5 py-3 rounded-xl text-sm whitespace-nowrap">Lock it in →</a>
     </div>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Detailed breakdown data for both tiers
-            const packageData = {
-                core: {
-                    title: "Core Media Tier",
-                    price: "PKR 50,000",
-                    sections: [
-                        {
-                            heading: "Media Production",
-                            items: [
-                                "Professional Video production for exactly 7 specific cars.",
-                                "High-resolution Photography (10 to 15 edited pictures per car)."
-                            ]
-                        },
-                        {
-                            heading: "Social Media Management",
-                            items: [
-                                "Simple, direct posting of the produced content.",
-                                "Platforms managed: Instagram & Facebook only."
-                            ]
-                        }
-                    ]
-                },
-                automation: {
-                    title: "Full Automation Tier",
-                    price: "PKR 95,000",
-                    sections: [
-                        {
-                            heading: "Complete Content Pipeline",
-                            items: [
-                                "<strong>Guaranteed Consistency:</strong> At least 1 high-quality post every single day.",
-                                "<strong>Strategic Backups:</strong> 2-3 backup posts per week prepared for dry spells (when no new cars arrive).",
-                                "<strong>Total Event Coverage:</strong> Photography, videography, and posters for any automotive market events or showroom announcements.",
-                                "<strong>Brand Focus:</strong> Main car edits and creatives designed specifically to promote the showroom's name and brand identity, not just direct car sales.",
-                                "<strong>Custom Graphics:</strong> Professionally designed custom thumbnails for every video post."
-                            ]
-                        },
-                        {
-                            heading: "Total Platform Management",
-                            items: [
-                                "All posting, scheduling, and content distribution completely automated.",
-                                "<strong>Platforms Included:</strong> Instagram, Facebook, TikTok, Pakwheels, and LinkedIn.",
-                                "<strong>Meta Ad Campaigns:</strong> Complete setup and management of targeted advertising campaigns.",
-                                "<strong>Inventory Sync:</strong> All incoming car stock will be documented and posted accordingly without you lifting a finger."
-                            ]
-                        },
-                        {
-                            heading: "Asset Management",
-                            items: [
-                                "<strong>Cloud Storage:</strong> All videos and pictures recorded will be saved on a secure, organized drive.",
-                                "<strong>24/7 Access:</strong> You maintain full, anytime access to all your raw and edited digital assets."
-                            ]
-                        }
-                    ]
-                }
-            };
+  <!-- MODAL -->
+  <div id="modal" class="modal-bd">
+    <div class="modal-ct w-full max-w-2xl p-6 md:p-9 rounded-3xl">
+      <div class="flex justify-between items-start mb-6 border-b border-[var(--line)] pb-4">
+        <div>
+          <p class="eyebrow mb-1">What's included</p>
+          <h3 id="m-title" class="font-display text-3xl font-semibold"></h3>
+        </div>
+        <button id="m-close" class="btn btn-ghost p-2 rounded-full leading-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div id="m-body" class="space-y-7"></div>
+      <div class="mt-8 pt-5 border-t border-[var(--line)] flex justify-between items-center">
+        <span class="text-[var(--muted)] font-medium" id="m-pricelabel">Price</span>
+        <span id="m-price" class="font-display text-3xl font-semibold text-[var(--gold)] text-glow"></span>
+      </div>
+    </div>
+  </div>
 
-            const visualizeBtns = document.querySelectorAll('.visualize-btn');
-            const modal = document.getElementById('detail-modal');
-            const closeModalBtn = document.getElementById('close-modal');
-            const modalBody = document.getElementById('modal-body');
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fmt = n => 'PKR ' + n.toLocaleString('en-US');
 
-            function openModal(packageKey) {
-                const data = packageData[packageKey];
-                
-                // Set Headers and Prices
-                document.getElementById('modal-title').textContent = data.title;
-                document.getElementById('modal-price').textContent = data.price;
-                
-                // Generate Body Content
-                modalBody.innerHTML = ''; 
-                
-                data.sections.forEach(section => {
-                    const sectionDiv = document.createElement('div');
-                    
-                    const heading = document.createElement('h4');
-                    heading.className = 'text-xl font-bold text-white mb-3 flex items-center';
-                    heading.innerHTML = `<span class="w-2 h-2 bg-[#f59e0b] rounded-full mr-3 shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span> ${section.heading}`;
-                    
-                    const list = document.createElement('ul');
-                    list.className = 'space-y-3 text-gray-300 pl-5';
-                    
-                    section.items.forEach(item => {
-                        const li = document.createElement('li');
-                        li.className = 'flex items-start';
-                        li.innerHTML = `<svg class="w-5 h-5 text-gray-400 mr-3 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg> <span>${item}</span>`;
-                        list.appendChild(li);
-                    });
-                    
-                    sectionDiv.appendChild(heading);
-                    sectionDiv.appendChild(list);
-                    modalBody.appendChild(sectionDiv);
-                });
+  /* ---------- live totals ---------- */
+  const modules = [...document.querySelectorAll('.module')];
 
-                // Show Modal using CSS class toggle for animations
-                modal.classList.add('show');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-            }
+  function animateNumber(el, to, suffix=''){
+    const cur = parseInt(el.dataset.cur || '0', 10);
+    if (reduce || cur === to){ el.dataset.cur = to; el.innerHTML = fmt(to) + suffix; return; }
+    const start = performance.now(), dur = 380;
+    function step(t){
+      const p = Math.min((t - start)/dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const v = Math.round(cur + (to - cur) * eased);
+      el.innerHTML = fmt(v) + suffix;
+      if (p < 1) requestAnimationFrame(step); else el.dataset.cur = to;
+    }
+    requestAnimationFrame(step);
+  }
 
-            function closeModal() {
-                modal.classList.remove('show');
-                document.body.style.overflow = 'auto'; // Restore background scrolling
-            }
+  function recalc(){
+    let oneTime = 0, monthlyItems = [];
+    modules.forEach(m => {
+      if (!m.classList.contains('selected')) return;
+      const price = +m.dataset.price;
+      if (m.dataset.recurring === 'true') monthlyItems.push(price);
+      else oneTime += price;
+    });
 
-            visualizeBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const packageKey = e.currentTarget.dataset.package;
-                    // Adding a tiny delay (100ms) before opening modal so the user sees the button "press" animation
-                    setTimeout(() => {
-                        openModal(packageKey);
-                    }, 100);
-                });
-            });
+    let monthly = monthlyItems.reduce((a,b)=>a+b,0);
+    const allThree = monthlyItems.length === 3;
+    if (allThree) monthly = 70000; // bundle price
 
-            closeModalBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-            
-            // Close modal on Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && modal.classList.contains('show')) {
-                    closeModal();
-                }
-            });
-        });
-    </script>
+    // foundation
+    animateNumber(document.getElementById('onetime-total'), oneTime);
+    animateNumber(document.getElementById('sum-onetime'), oneTime);
+
+    // monthly
+    animateNumber(document.getElementById('monthly-total'), monthly);
+    animateNumber(document.getElementById('sum-monthly'), monthly, '<span class="text-xs text-[var(--muted)]">/mo</span>');
+
+    // bundle messaging
+    const label = document.getElementById('monthly-label');
+    const note = document.getElementById('bundle-note');
+    const strike = document.getElementById('monthly-strike');
+    if (allThree){
+      label.textContent = 'Complete Retainer — all three';
+      note.textContent = "You're saving PKR 5,000/month vs à la carte";
+      note.style.display = '';
+      strike.innerHTML = ' &nbsp;<s class="opacity-60">75,000</s>';
+    } else if (monthlyItems.length === 0){
+      label.textContent = 'No monthly services selected';
+      note.style.display = 'none';
+      strike.innerHTML = '';
+    } else {
+      label.textContent = monthlyItems.length + ' service' + (monthlyItems.length>1?'s':'') + ' selected · add all 3 to save';
+      note.style.display = 'none';
+      strike.innerHTML = '';
+    }
+  }
+
+  modules.forEach(m => {
+    m.addEventListener('click', (e) => {
+      if (e.target.closest('.details')) return; // let details button do its thing
+      m.classList.toggle('selected');
+      const pill = m.querySelector('.pill');
+      if (pill) pill.setAttribute('aria-pressed', m.classList.contains('selected'));
+      recalc();
+    });
+  });
+
+  /* ---------- modal breakdowns ---------- */
+  const data = {
+    web: { title:'Website Development', price:'PKR 15,000', priceLabel:'One-time',
+      sections:[{ h:'What you get', items:[
+        ['Custom-designed site','mobile-first'],
+        ['Full menu + photo gallery',''],
+        ['Location, hours & Google Maps',''],
+        ['WhatsApp order / reservation button',''],
+        ['Basic SEO so you show up in search',''],
+        ['Hosting setup + handover','done for you']
+      ]}]},
+    photo: { title:'Menu Photography', price:'PKR 30,000', priceLabel:'~60 dishes × PKR 500',
+      sections:[{ h:'What you get', items:[
+        ['Every dish shot & styled','~60 dishes'],
+        ['Studio-grade lighting',''],
+        ['Edited & colour-graded',''],
+        ['Sized for web, print & delivery apps','Foodpanda etc.'],
+        ['Full usage rights — they\u2019re yours','']
+      ]},
+      { h:'Pricing', items:[
+        ['Per dish','PKR 500'],
+        ['Around 60 dishes','PKR 30,000']
+      ]}]},
+    gmb: { title:'Google Business & Maps', price:'PKR 8,000', priceLabel:'One-time add-on',
+      sections:[{ h:'What you get', items:[
+        ['Profile created / claimed & verified',''],
+        ['Photos, menu, hours & contact added',''],
+        ['Set up to collect & show reviews',''],
+        ['Shows up in "restaurants near me" searches','']
+      ]}]},
+    qr: { title:'QR Digital Menu', price:'PKR 5,000', priceLabel:'One-time add-on',
+      sections:[{ h:'What you get', items:[
+        ['Branded scannable menu for tables',''],
+        ['Update prices / items yourself anytime',''],
+        ['No reprinting when the menu changes',''],
+        ['Printable QR card design included','']
+      ]}]},
+    video: { title:'Cinematic Video', price:'PKR 50,000', priceLabel:'Per month',
+      sections:[{ h:'Every month', items:[
+        ['10 finished videos',''],
+        ['Cinematic ambience films','slow, moody venue + food b-roll'],
+        ['Dish close-ups & hero shots',''],
+        ['Reels / short-form for IG + TikTok',''],
+        ['Sound design + custom thumbnails','']
+      ]},
+      { h:'The maths', items:[
+        ['One-off single video','PKR 6,500'],
+        ['Monthly pack — per video','PKR 5,000'],
+        ['You save','PKR 15,000/mo']
+      ]}]},
+    mgmt: { title:'Management & Campaigns', price:'PKR 20,000', priceLabel:'Per month',
+      sections:[{ h:'Every month', items:[
+        ['Full Instagram + Facebook management',''],
+        ['Scheduling, captions & hashtag strategy',''],
+        ['Replying to DMs & comments',''],
+        ['Meta ad campaigns — setup + management',''],
+        ['Monthly performance report','']
+      ]},
+      { h:'Good to know', items:[
+        ['Ad budget paid to Meta','billed separately']
+      ]}]},
+    pics: { title:'Photo Content', price:'PKR 5,000', priceLabel:'Per month',
+      sections:[{ h:'Every month', items:[
+        ['15 edited posts',''],
+        ['Specials & offer graphics',''],
+        ['Story content',''],
+        ['Seasonal / festive creatives','Ramadan, Eid & more']
+      ]}]}
+  };
+
+  const modal = document.getElementById('modal');
+  const mBody = document.getElementById('m-body');
+
+  function openModal(key){
+    const d = data[key]; if (!d) return;
+    document.getElementById('m-title').textContent = d.title;
+    document.getElementById('m-price').textContent = d.price;
+    document.getElementById('m-pricelabel').textContent = d.priceLabel;
+    mBody.innerHTML = '';
+    d.sections.forEach(sec => {
+      const wrap = document.createElement('div');
+      const h = document.createElement('h4');
+      h.className = 'flex items-center gap-3 mb-4 font-semibold text-[var(--cream)]';
+      h.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-[var(--gold)] shadow-[0_0_8px_rgba(230,177,94,0.8)]"></span>' + sec.h;
+      wrap.appendChild(h);
+      const ul = document.createElement('div');
+      ul.className = 'space-y-3 pl-4';
+      sec.items.forEach(([name, note]) => {
+        const row = document.createElement('div');
+        row.className = 'leader text-sm';
+        row.innerHTML = '<span class="nm">'+name+'</span><span class="dots"></span>' +
+          (note ? '<span class="pr text-xs not-italic" style="color:var(--muted);font-family:Inter">'+note+'</span>' : '<span class="pr">✓</span>');
+        ul.appendChild(row);
+      });
+      wrap.appendChild(ul);
+      mBody.appendChild(wrap);
+    });
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(){ modal.classList.remove('show'); document.body.style.overflow = 'auto'; }
+
+  document.querySelectorAll('.details').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setTimeout(() => openModal(b.dataset.key), 90);
+    });
+  });
+  document.getElementById('m-close').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  recalc();
+});
+</script>
 </body>
 </html>
-
-
-
-```
