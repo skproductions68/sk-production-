@@ -165,7 +165,7 @@
 
       <div class="grid md:grid-cols-2 gap-6">
         <!-- Website -->
-        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="web" data-price="15000" data-recurring="false">
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="web" data-name="Website" data-price="15000" data-recurring="false">
           <div class="flex justify-between items-start mb-4">
             <h3 class="font-display text-2xl font-semibold pr-3">Website Development</h3>
             <button class="pill btn shrink-0" aria-pressed="true">
@@ -187,7 +187,7 @@
         </div>
 
         <!-- Photography -->
-        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="photo" data-price="30000" data-recurring="false">
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="photo" data-name="Menu Photography" data-price="30000" data-recurring="false">
           <div class="flex justify-between items-start mb-4">
             <h3 class="font-display text-2xl font-semibold pr-3">Menu Photography</h3>
             <button class="pill btn shrink-0" aria-pressed="true">
@@ -212,7 +212,7 @@
       <!-- optional add-ons -->
       <p class="eyebrow mt-10 mb-4 opacity-80">Optional add-ons</p>
       <div class="grid sm:grid-cols-2 gap-4">
-        <div class="module glass rounded-2xl p-5 flex items-center justify-between" data-id="gmb" data-price="8000" data-recurring="false">
+        <div class="module glass rounded-2xl p-5 flex items-center justify-between" data-id="gmb" data-name="Google Business &amp; Maps" data-price="8000" data-recurring="false">
           <div class="pr-3">
             <h4 class="font-semibold text-[var(--cream)]">Google Business &amp; Maps</h4>
             <p class="text-xs text-[var(--muted)] mt-1">Profile, photos &amp; menu so you show up when people search nearby.</p>
@@ -222,7 +222,7 @@
             <span class="plus">+ Add</span><span class="check">✓ Added</span>
           </button>
         </div>
-        <div class="module glass rounded-2xl p-5 flex items-center justify-between" data-id="qr" data-price="5000" data-recurring="false">
+        <div class="module glass rounded-2xl p-5 flex items-center justify-between" data-id="qr" data-name="QR Digital Menu" data-price="5000" data-recurring="false">
           <div class="pr-3">
             <h4 class="font-semibold text-[var(--cream)]">QR Digital Menu</h4>
             <p class="text-xs text-[var(--muted)] mt-1">Scannable table menu you can update yourself — no reprints.</p>
@@ -252,7 +252,7 @@
 
       <div class="grid md:grid-cols-3 gap-6">
         <!-- Video -->
-        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="video" data-price="50000" data-recurring="true">
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="video" data-name="Cinematic Video" data-price="50000" data-recurring="true">
           <div class="flex justify-between items-start mb-4">
             <h3 class="font-display text-xl font-semibold pr-2">Cinematic Video</h3>
             <button class="pill btn shrink-0" aria-pressed="true">
@@ -270,7 +270,7 @@
         </div>
 
         <!-- Management -->
-        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="mgmt" data-price="20000" data-recurring="true">
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="mgmt" data-name="Management &amp; Campaigns" data-price="20000" data-recurring="true">
           <div class="flex justify-between items-start mb-4">
             <h3 class="font-display text-xl font-semibold pr-2">Management &amp; Campaigns</h3>
             <button class="pill btn shrink-0" aria-pressed="true">
@@ -288,7 +288,7 @@
         </div>
 
         <!-- Photos -->
-        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="pics" data-price="5000" data-recurring="true">
+        <div class="module glass selected rounded-3xl p-7 flex flex-col" data-id="pics" data-name="Photo Content" data-price="5000" data-recurring="true">
           <div class="flex justify-between items-start mb-4">
             <h3 class="font-display text-xl font-semibold pr-2">Photo Content</h3>
             <button class="pill btn shrink-0" aria-pressed="true">
@@ -340,7 +340,7 @@
           <p class="font-display text-lg sm:text-xl font-semibold text-[var(--gold)] truncate" id="sum-monthly">PKR 70,000<span class="text-xs text-[var(--muted)]">/mo</span></p>
         </div>
       </div>
-      <a href="https://wa.me/" target="_blank" rel="noopener" class="btn btn-gold px-5 py-3 rounded-xl text-sm whitespace-nowrap">Lock it in →</a>
+      <a id="wa-btn" href="https://wa.me/923332077999" target="_blank" rel="noopener" class="btn btn-gold px-5 py-3 rounded-xl text-sm whitespace-nowrap">Lock it in →</a>
     </div>
   </div>
 
@@ -371,6 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- live totals ---------- */
   const modules = [...document.querySelectorAll('.module')];
+  const waBtn = document.getElementById('wa-btn');
 
   function animateNumber(el, to, suffix=''){
     const cur = parseInt(el.dataset.cur || '0', 10);
@@ -387,15 +388,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function recalc(){
-    let oneTime = 0, monthlyItems = [];
+    let oneTimeItems = [], monthlyItems = [];
     modules.forEach(m => {
       if (!m.classList.contains('selected')) return;
-      const price = +m.dataset.price;
-      if (m.dataset.recurring === 'true') monthlyItems.push(price);
-      else oneTime += price;
+      const item = { name: m.dataset.name || 'Service', price: +m.dataset.price };
+      if (m.dataset.recurring === 'true') monthlyItems.push(item);
+      else oneTimeItems.push(item);
     });
 
-    let monthly = monthlyItems.reduce((a,b)=>a+b,0);
+    const oneTime = oneTimeItems.reduce((a,b)=>a+b.price,0);
+    let monthly = monthlyItems.reduce((a,b)=>a+b.price,0);
     const allThree = monthlyItems.length === 3;
     if (allThree) monthly = 70000; // bundle price
 
@@ -425,6 +427,25 @@ document.addEventListener('DOMContentLoaded', () => {
       note.style.display = 'none';
       strike.innerHTML = '';
     }
+
+    // build the WhatsApp message from the current selection
+    let lines = ['Hi SK Productions, I\u2019d like to lock in this package for my restaurant:', ''];
+    if (oneTimeItems.length){
+      lines.push('— One-time setup —');
+      oneTimeItems.forEach(i => lines.push('• ' + i.name + ': ' + fmt(i.price)));
+      lines.push('Setup total: ' + fmt(oneTime));
+      lines.push('');
+    }
+    if (monthlyItems.length){
+      lines.push('— Monthly —');
+      monthlyItems.forEach(i => lines.push('• ' + i.name + ': ' + fmt(i.price) + '/mo'));
+      lines.push('Monthly total: ' + fmt(monthly) + '/mo' + (allThree ? ' (Complete Retainer, saving PKR 5,000)' : ''));
+      lines.push('');
+    }
+    if (!oneTimeItems.length && !monthlyItems.length){
+      lines = ['Hi SK Productions, I\u2019d like to discuss a media package for my restaurant.'];
+    }
+    waBtn.href = 'https://wa.me/923332077999?text=' + encodeURIComponent(lines.join('\n').trim());
   }
 
   modules.forEach(m => {
